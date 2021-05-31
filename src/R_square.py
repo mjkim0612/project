@@ -22,13 +22,13 @@ def find_best_fit_ind(order,x_value,y_value):
     rs_min3 = rs_list[IL_ind]
     return IL_ind
 
-# def find_R_square(order,x_value,y_value):
-#     IL_fit_value = fit_data
-#     rs_list = []
-#     for i in range(0,len(IL_fit_value)):
-#         IL_R = R_square(y_value,IL_fit_value[i])
-#         rs_list.append(IL_R)
-#     return rs_list
+def find_R_square(order,x_value,y_value):
+    IL_fit_value = polyfitting_po(order, x_value, y_value)
+    rs_list = []
+    for i in range(0,len(IL_fit_value)):
+        IL_R = R_square(y_value,IL_fit_value[i])
+        rs_list.append(IL_R)
+    return rs_list
 
 def get_R2():
     return rs_min3

@@ -8,10 +8,10 @@ from poly_fitting import polyfitting_p1d1
 def IVfitting(x,y,number=0):
     global R
     def expfuc(x, a, b, c):
-        return b * (np.exp(a * x) - 1) * c + IV_fit_value[i](x)
+        return b * (np.exp(a * x) - 1) * c + IV_fit_value[0](x)
     IV_x = data_set(x)
     IV_y = data_set(y,1)
-    IV_fit_value = polyfitting_p1d1(15,IV_x[number][:10],IV_y[number][:10])
+    IV_fit_value = polyfitting_p1d1(14,IV_x[number][:10],IV_y[number][:10])
     emodel = Model(expfuc)
     fit_result = []
     fit = []
@@ -28,7 +28,7 @@ def IVfitting(x,y,number=0):
     R = fit_result[IV_ind]
 
     global IV_dic
-    plt.plot(IV_x[number],fit[IV_ind],'r-',label = '{} {}{} {} {}'.format('processed',IV_ind+13,'$^{th}$','$R^{2}$ =',R))
+    plt.plot(IV_x[number],fit[IV_ind],'r-',label = '{} {} {}'.format('processed',IV_ind+13,'th'))
     IV_dic = {y:x for x,y in zip(fit[IV_ind],IV_x[number])}
     plt.text(1.0,IV_dic[1.0],IV_dic[1.0],fontsize = 8,horizontalalignment = 'right')
     plt.text(-1.0,IV_dic[-1.0],IV_dic[-1.0],fontsize = 8)

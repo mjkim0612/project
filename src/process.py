@@ -84,13 +84,14 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
             name = tree.find('ElectroOpticalMeasurements/ModulatorSite/Modulator')
             name_list.append(name.attrib['Name'])
             plt.figure(figsize = (18,12))
-            plt.subplot(224)
+            plt.subplot(234)
             IVvoltage = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/IVMeasurement/Voltage')
             IVcurrent = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/IVMeasurement/Current')
             IVplot(IVvoltage,IVcurrent)
             IVfitting(IVvoltage,IVcurrent)
+            print('flag1')
             R_s = return_R()
             IV_dict = return_IV_dic()
             I_1.append(IV_dict[-1.0])
@@ -113,14 +114,18 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/WavelengthSweep/IL')
             DCbias = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/WavelengthSweep')
-            plt.subplot(221)
-            ILplot.IL_raw_plot(Wavelength,IL,ILplot.find_DCbias(DCbias))
-            plt.subplot(222)
+            ILplot.find_DCbias(DCbias)
+            plt.subplot(231)
+            ILplot.IL_raw_plot(Wavelength,IL)
+            print('flag2')
+            plt.subplot(232)
             ILplot.IL_fitting_ref(Wavelength,IL,8)
-            plt.subplot(223)
-            ILplot.IL_processed_plot(Wavelength,IL,ILplot.find_DCbias(DCbias),8)
-            IL_R_2 =ILplot.get_R()[-1]
+            print('flag3')
+            plt.subplot(233)
+            ILplot.IL_processed_plot(Wavelength,IL,8)
+            IL_R_2 =R_square.get_R2()
             IL_R2_list.append(IL_R_2)
+            print('flag4')
             if show == True:
                 plt.show()
 
@@ -131,18 +136,20 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
                     os.makedirs('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3]))
                 if not os.path.exists('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4])):
                     os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
-                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi = 80, bbox_inches = 'tight')
-            plt.cla()
-            plt.subplot(224)
-            plt.cla()
-            plt.subplot(221)
-            plt.cla()
-            plt.subplot(222)
-            plt.cla()
+                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight', dpi=80)
+            print('flag5')
+            plt.close()
+            # plt.subplot(224)
+            # plt.cla()
+            # plt.subplot(221)
+            # plt.cla()
+            # plt.subplot(222)
+            # plt.cla()
             if j < 98 :
                 j = j+1
 
             print(filename, 'processed({}/{})'.format(j, file_num))
+            print(time.time()-start)
 
     if file_input != None:
         file_input_list = file_input.split(',')
