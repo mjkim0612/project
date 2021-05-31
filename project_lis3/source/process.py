@@ -65,8 +65,6 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     start = time.time()
 
     for i in path:
-        print(i)
-        break
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
