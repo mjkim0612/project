@@ -65,6 +65,8 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     start = time.time()
 
     for i in path:
+        print(i)
+        break
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
@@ -121,11 +123,13 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 plt.show()
 
             if save_fig == False:
-                if not os.path.exists('./result/{}'.format(i.split('\\')[3])):
-                    os.makedirs('./result/{}'.format(i.split('\\')[3]))
-                if not os.path.exists('./result/{}/{}'.format(i.split('\\')[3],i.split('\\')[4])):
-                    os.makedirs('./result/{}/{}'.format(i.split('\\')[3],i.split('\\')[4]))
-                plt.savefig('./result/{}/{}/{}.png'.format(i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight')
+                if not os.path.exists('./result/{}'.format(i.split('\\')[2])):
+                    os.makedirs('./result/{}'.format(i.split('\\')[2]))
+                if not os.path.exists('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3])):
+                    os.makedirs('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3]))
+                if not os.path.exists('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4])):
+                    os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
+                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight')
             plt.cla()
             plt.subplot(224)
             plt.cla()
