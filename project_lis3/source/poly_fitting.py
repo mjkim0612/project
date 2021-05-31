@@ -2,11 +2,11 @@ import numpy as np
 
 def polyfitting_p1d1(number,x,y):
     p_list = []
-    for i in range(13,number):
+    for i in range(12,number):
         p_list.append(np.polyfit(x,y,i))
     p1d_list = []
-    for i in range(13,number):
-        p1d_list.append(np.poly1d(p_list[i-13]))
+    for i in range(12,number):
+        p1d_list.append(np.poly1d(p_list[i-12]))
     return p1d_list
 
 def polyfitting_p1d2(number,x,y):

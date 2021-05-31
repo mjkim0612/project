@@ -12,7 +12,7 @@ import pandas as pd
 import warnings
 import os
 warnings.filterwarnings(action='ignore')
-from tqdm import tqdm_notebook
+import time
 
 filename_list = []
 wafer_list = []
@@ -36,9 +36,8 @@ testsiteinfo_list = [wafer_list,lot_list,mask_list,dierow_list,diecolumn_list,te
 testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite']
 pddata_list = []
 anal = ['DCM_LMZC','DCM_LMZO']
-def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None,dierow_coor=None,diecolumn_coor=None):
+def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     j = 0
-    h = 0
     data_dic = {'Lot' : lot_list,
                 'Wafer': wafer_list,
                 'Mask' : mask_list,
@@ -56,16 +55,21 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None,diero
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
     path = glob2.glob(path_file)
-    file_num = len(path)
+
+    file_list = []
+    for i in path:
+        if i.split('\\')[-1][-12:-4] in anal :
+            file_list.append(i)
+    file_num = len(file_list)
+
+    start = time.time()
 
     for i in path:
-        h = h+1
-        filename = i.split('\\')[-1][:-4]
-        print(filename, 'processed({}/{})'.format(h, file_num))
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
         if testsiteinfo.attrib['TestSite'] in anal:
+            filename = file_list[j].split('\\')[-1][:-4]
             for k in range(0,len(testsiteinfo_list)):
                 testsiteinfo_list[k].append(testsiteinfo.attrib[testsite_attrib_list[k]])
             date = list(tree.iter('OIOMeasurement'))[0]
@@ -119,7 +123,9 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None,diero
             if save_fig == False:
                 if not os.path.exists('./result/{}'.format(i.split('\\')[3])):
                     os.makedirs('./result/{}'.format(i.split('\\')[3]))
-                plt.savefig('./result/{}/{}.png'.format(i.split('\\')[3],filename), dpi = 100, bbox_inches = 'tight')
+                if not os.path.exists('./result/{}/{}'.format(i.split('\\')[3],i.split('\\')[4])):
+                    os.makedirs('./result/{}/{}'.format(i.split('\\')[3],i.split('\\')[4]))
+                plt.savefig('./result/{}/{}/{}.png'.format(i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight')
             plt.cla()
             plt.subplot(224)
             plt.cla()
@@ -127,10 +133,10 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None,diero
             plt.cla()
             plt.subplot(222)
             plt.cla()
-            j = j+1
+            if j < 98 :
+                j = j+1
 
-    #
-    # if dierow_coor != None:
+            print(filename, 'processed({}/{})'.format(j, file_num))
 
     if file_input != None:
         file_input_list = file_input.split(',')
@@ -144,25 +150,11 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None,diero
         if save_csv == False:
             df.T.to_csv('./result/result.csv')
     else:
-        # df = pd.DataFrame({'Lot': lot_list,
-        #                    'Wafer': wafer_list,
-        #                    'Mask': mask_list,
-        #                    'TestSite': testsite_list,
-        #                    'Name': name_list,
-        #                    'Date': date_list,
-        #                    'Operator': operator_list,
-        #                    'Row': dierow_list,
-        #                    'Column': diecolumn_list,
-        #                    'error flag' : error_flag_list,
-        #                    'error description' : error_description_list,
-        #                    'Analysis Wavelength' : analy_list,
-        #                    'Rsq of Ref. spectrum' : IL_R2_list,
-        #                    'Rsq of IV' : Rsq_IV_list,
-        #                    'I at -1V[A]' : I_1,
-        #                    'I at 1V[A]' : I_2})
         index_list = []
         for _ in range(0,j):
             index_list.append('')
         df = pd.DataFrame(data = data_dic, index = index_list)
         if save_csv == False:
             df.to_csv('./result/result.csv')
+
+    print("time for processed :", round(time.time() - start),"s")
