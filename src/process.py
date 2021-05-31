@@ -36,7 +36,7 @@ testsiteinfo_list = [wafer_list,lot_list,mask_list,dierow_list,diecolumn_list,te
 testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite']
 pddata_list = []
 anal = ['DCM_LMZC','DCM_LMZO']
-def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
+def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None):
     j = 0
     data_dic = {'Lot' : lot_list,
                 'Wafer': wafer_list,
@@ -54,7 +54,11 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 'Rsq of IV' : Rsq_IV_list,
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
-    path = glob2.glob(path_file)
+
+    if path_file == False:
+        path = glob2.glob('.\data\**\*.xml')
+    else:
+        path = path_file
 
     file_list = []
     for i in path:
@@ -65,8 +69,6 @@ def run(path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     start = time.time()
 
     for i in path:
-        print(i)
-        break
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
