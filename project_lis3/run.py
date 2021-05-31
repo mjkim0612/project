@@ -1,6 +1,6 @@
 from process import run
 
-run('.\data\**\*.xml')
+run('.\data\**\*.xml',show=False,save_fig=True,save_csv=True)
 
 # run(path_file,show=False,save_fig=False,save_csv=False,file_input=None)
 
