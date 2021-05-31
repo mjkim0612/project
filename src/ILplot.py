@@ -25,10 +25,14 @@ def IL_raw_plot(x,y,DC):
 def IL_fitting_ref(x,y,order=6):
     IL_x = data_set(x)
     IL_y = data_set(y)
-    rs_list = R_square.find_R_square(order, IL_x[6], IL_y[6])
+    global rs_list
+    rs_list = []
+    global fit_data
     fit_data = polyfitting_po(order, IL_x[6], IL_y[6])
-    for i in range(0,order):
-        plt.plot(IL_x[6],fit_data[i],label='{}{} {} {}'.format(i,'$^{th}$','$R^{2}$ =',round(rs_list[i],5)))
+    for k in range(0,len(fit_data)):
+        rs_list.append(R_square.R_square(IL_y[6],fit_data[k]))
+    for i in range(0,3):
+        plt.plot(IL_x[6],fit_data[i],label='{}{} {} {}'.format(i+4,'$^{th}$','$R^{2}$ =',round(rs_list[i],5)))
     plt.legend(ncol=3, loc=8)
     plt.ylabel('Measured transmission[dB]')
     plt.xlabel('Wavelength[nm]')
@@ -37,19 +41,20 @@ def IL_fitting_ref(x,y,order=6):
 def IL_processed_plot(x,y,DC,order=6):
     IL_x = data_set(x)
     IL_y = data_set(y)
-    ind_IL = R_square.find_best_fit_ind(order, IL_x[6], IL_y[6])
-    fit_data = polyfitting_po(order,IL_x[6],IL_y[6])
     for i in range(0, len(x)):
         x = IL_x[i]
         y = []
         try:
             for k in range(0,len(IL_y[i])):
-                y.append(float(IL_y[i][k])-fit_data[ind_IL][k])
+                y.append(float(IL_y[i][k])-fit_data[-1][k])
         except:
-            x = IL_x[i][0:len(fit_data[ind_IL])]
-            y = y[0:len(fit_data[ind_IL])]
+            x = IL_x[i][0:len(fit_data[-1])]
+            y = y[0:len(fit_data[-1])]
         plt.plot(x, y, label=DC[i])
     plt.legend(ncol=4)
     plt.ylabel('Measured transmission[dB]')
     plt.xlabel('Wavelength[nm]')
-    plt.title('Transmission spectra - as measured & processed for {}{} fit ref'.format(ind_IL, '$^{th}$'))
+    plt.title('Transmission spectra - as measured & processed for {}{} fit ref'.format(6, '$^{th}$'))
+
+def get_R():
+    return rs_list

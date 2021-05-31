@@ -58,7 +58,7 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
     if path_file == False:
         path = glob2.glob('.\data\**\*.xml')
     else:
-        path = path_file
+        path = glob2.glob('{}'.format(path_file))
 
     file_list = []
     for i in path:
@@ -119,7 +119,7 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
             ILplot.IL_fitting_ref(Wavelength,IL,8)
             plt.subplot(223)
             ILplot.IL_processed_plot(Wavelength,IL,ILplot.find_DCbias(DCbias),8)
-            IL_R_2 =R_square.get_R2()
+            IL_R_2 =ILplot.get_R()[-1]
             IL_R2_list.append(IL_R_2)
             if show == True:
                 plt.show()
@@ -131,7 +131,7 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
                     os.makedirs('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3]))
                 if not os.path.exists('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4])):
                     os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
-                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight')
+                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi = 80, bbox_inches = 'tight')
             plt.cla()
             plt.subplot(224)
             plt.cla()

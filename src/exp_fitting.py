@@ -27,26 +27,6 @@ def IVfitting(x,y,number=0):
     IV_ind = rs_min.index(rs_min2)
     R = fit_result[IV_ind]
 
-    # while IV_ind > 4:
-    #     g = 9
-    #     IV_x = data_set(x)
-    #     IV_y = data_set(y, 1)
-    #     IV_fit_value = polyfitting_p1d(10, IV_x[number][:g], IV_y[number][:g])
-    #     emodel = Model(expfuc)
-    #     fit_result = []
-    #     fit = []
-    #     for i in range(0, len(IV_fit_value)):
-    #         result1 = emodel.fit(IV_y[number], x=IV_x[number], b=1, a=1, c=1)
-    #         R = R_square(IV_y[number], result1.best_fit)
-    #         fit_result.append(R)
-    #         fit.append(result1.best_fit)
-    #     rs_min = []
-    #     for i in range(0, len(fit_result)):
-    #         rs_min.append(abs(fit_result[i] - 1))
-    #     rs_min2 = min(rs_min)
-    #     IV_ind = rs_min.index(rs_min2)
-    #     R = fit_result[IV_ind]
-    #     g = g - 1
     global IV_dic
     plt.plot(IV_x[number],fit[IV_ind],'r-',label = '{} {}{} {} {}'.format('processed',IV_ind+13,'$^{th}$','$R^{2}$ =',R))
     IV_dic = {y:x for x,y in zip(fit[IV_ind],IV_x[number])}
