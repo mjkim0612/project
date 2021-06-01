@@ -91,7 +91,6 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/IVMeasurement/Current')
             IVplot(IVvoltage,IVcurrent)
             IVfitting(IVvoltage,IVcurrent)
-            print('flag1')
             R_s = return_R()
             IV_dict = return_IV_dic()
             I_1.append(IV_dict[-1.0])
