@@ -28,9 +28,9 @@ def IL_fitting_ref(x,y,order=6):
     IL_y = data_set(y)
     rs_list = R_square.find_R_square(order, IL_x[6], IL_y[6])
     fit_data = polyfitting_po(order, IL_x[6], IL_y[6])
-    for i in range(0,order):
-        plt.plot(IL_x[6],fit_data[i],label='{}{} {} {}'.format(i,'$^{th}$','$R^{2}$ =',round(rs_list[i],5)))
-    plt.legend(ncol=3, loc=8)
+    for i in range(4,order):
+        plt.plot(IL_x[6],fit_data[i-4],label='{}{} {} {}'.format(i,'$^{th}$','$R^{2}$ =',round(rs_list[i-4],5)))
+    plt.legend(ncol=2, loc=8)
     plt.ylabel('Measured transmission[dB]')
     plt.xlabel('Wavelength[nm]')
     plt.title('Transmission spectra - processed ref')
@@ -53,4 +53,4 @@ def IL_processed_plot(x,y,order=6):
     plt.legend(ncol=4)
     plt.ylabel('Measured transmission[dB]')
     plt.xlabel('Wavelength[nm]')
-    plt.title('Transmission spectra - as measured & processed for {}{} fit ref'.format(ind_IL, '$^{th}$'))
+    plt.title('Transmission spectra - as measured & processed for {}{} fit ref'.format(ind_IL+4, '$^{th}$'))

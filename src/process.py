@@ -117,27 +117,28 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
             ILplot.find_DCbias(DCbias)
             plt.subplot(231)
             ILplot.IL_raw_plot(Wavelength,IL)
-            print('flag2')
+
             plt.subplot(232)
             ILplot.IL_fitting_ref(Wavelength,IL,8)
-            print('flag3')
+
             plt.subplot(233)
             ILplot.IL_processed_plot(Wavelength,IL,8)
             IL_R_2 =R_square.get_R2()
             IL_R2_list.append(IL_R_2)
-            print('flag4')
+
             if show == True:
                 plt.show()
 
             if save_fig == False:
+                if not os.path.exists('./result'):
+                    os.makedirs('./result')
                 if not os.path.exists('./result/{}'.format(i.split('\\')[2])):
                     os.makedirs('./result/{}'.format(i.split('\\')[2]))
                 if not os.path.exists('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3])):
                     os.makedirs('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3]))
                 if not os.path.exists('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4])):
                     os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
-                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), bbox_inches = 'tight', dpi=80)
-            print('flag5')
+                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi=80)
             plt.close()
             # plt.subplot(224)
             # plt.cla()
@@ -149,7 +150,6 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
                 j = j+1
 
             print(filename, 'processed({}/{})'.format(j, file_num))
-            print(time.time()-start)
 
     if file_input != None:
         file_input_list = file_input.split(',')
@@ -168,6 +168,8 @@ def run(path_file=False,show=False,save_fig=False,save_csv=False,file_input=None
             index_list.append('')
         df = pd.DataFrame(data = data_dic, index = index_list)
         if save_csv == False:
+            if not os.path.exists('./result'):
+                os.makedirs('./result')
             df.to_csv('./result/result.csv')
 
     print("time for processed :", round(time.time() - start),"s")
