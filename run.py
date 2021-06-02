@@ -1,55 +1,78 @@
 from process import run
 import sys
-# from PyQt5.QtWidgets import *
-# from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 
-# class MyApp(QWidget):
-#
-#     def __init__(self):
-#         super().__init__()
-#         self.initUI()
-#
-#     def initUI(self):
-#         self.cb1 = QCheckBox('Show figure', self)
-#         self.cb2 = QCheckBox('Save figure', self)
-#         self.cb3 = QCheckBox('Save csv', self)
-#         self.cb1.move(20, 20)
-#         self.cb2.move(20, 60)
-#         self.cb3.move(20, 100)
-#         self.cb1.toggle()
-#         self.cb2.toggle()
-#         self.cb3.toggle()
-#
-#         self.btnSave = QPushButton("set", self)
-#         self.btnSave.move(10, 160)
-#         self.btnSave.clicked.connect(self.btnInput_clicked)
-#         self.btnSave.clicked.connect(QCoreApplication.instance().quit)
-#
-#         self.setWindowTitle('QCheckBox')
-#         self.setGeometry(300, 300, 300, 200)
-#         self.show()
-#
-#     def btnInput_clicked(self):
-#         global show
-#         global save_fig
-#         global save_csv
-#         show = self.cb1.isChecked()
-#         save_fig = self.cb1.isChecked()
-#         save_csv = self.cb1.isChecked()
+class MyApp(QWidget):
 
+    def __init__(self):
+        super().__init__()
+        self.initUI()
 
+    def initUI(self):
+        self.cb1 = QCheckBox('Yes', self)
+        self.cb4 = QCheckBox('No', self)
 
+        self.cb2 = QCheckBox('Yes', self)
+        self.cb5 = QCheckBox('No', self)
 
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     ex = MyApp()
-#     app.exec_()
-#     print(show)
-#     print(save_fig)
+        self.cb3 = QCheckBox('Yes', self)
+        self.cb6 = QCheckBox('No', self)
 
+        self.btnSave = QPushButton("set", self)
+        self.btnSave.move(200, 170)
+        self.btnSave.clicked.connect(self.btnInput_clicked)
+        self.btnSave.clicked.connect(QCoreApplication.instance().quit)
 
-run('.\data\**\*.xml')
+        label1 = QLabel('Want to see the figure?',self)
+        label1.move(20,20)
+        self.cb1.move(20,40)
+        self.cb4.move(70,40)
 
+        label2 = QLabel('Want to save the figure?',self)
+        label2.move(20,60)
+        self.cb2.move(20,80)
+        self.cb5.move(70,80)
+
+        label3 = QLabel('Want to save the csv?',self)
+        label3.move(20,100)
+        self.cb3.move(20,120)
+        self.cb6.move(70,120)
+        hbox1 = QHBoxLayout()
+        hbox1.addStretch(1)
+        label4 = QLabel('Enter your path:',self)
+        label4.move(20,140)
+
+        self.setWindowTitle('QCheckBox')
+        self.setGeometry(300, 400, 300, 200)
+
+        self.le = QLineEdit('',self)
+        self.le.move(120, 140)
+
+        self.show()
+
+    def btnInput_clicked(self):
+        global show
+        global save_fig
+        global save_csv
+        global path_input
+
+        show = self.cb1.isChecked()
+        save_fig = self.cb5.isChecked()
+        save_csv = self.cb6.isChecked()
+        path_input = self.le.text()
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    app.exec_()
+    print(show)
+    print(save_fig)
+    print(save_csv)
+    print(path_input)
+
+run(path_input,show,save_fig,save_csv)
+'.\data\**\*.xml'
 # run(path_file,show=False,save_fig=False,save_csv=False,file_input=None)
 
 # 'Lot, Wafer, Mask, TestSite, Name, Date, Operator, Row, Column,
