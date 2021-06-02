@@ -8,7 +8,7 @@ A1 김동구, 김민재, 박찬근
     * Result file(dataframe.csv , Image file)
 
 # Installation
-1. This program requires several libraries.
+1. This program requires several libraries.(Basically, interpreter anaconda or miniconda is needed.)
     * So, enter the 'Terminal' and type as follows.
     * pip install -r requirements.txt
     * This command will install all necessary libraries.
@@ -18,6 +18,9 @@ A1 김동구, 김민재, 박찬근
 3. Now the program is ready to use.
 
 # How to make it work
+1. Run the run.py it appears that these checkbox.
+![checkbox.png](./doc/image/checkbox.png)
+2. Select the desired option and click the set button to launch the program.
+    * At this point, enter the path in the textbox where the data file is in the outer path, and leave it blank if not.
 
-1. You need to set the path.(Specify the path at run.py to data folder.)
-2. In source folder, Right-click the source folder and set it as Source Root in Mark Directory as.
+

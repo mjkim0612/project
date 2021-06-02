@@ -19,6 +19,8 @@ class MyApp(QWidget):
         self.cb3 = QCheckBox('Yes', self)
         self.cb6 = QCheckBox('No', self)
 
+        self.cb7 = QCheckBox('External path', self)
+
         self.btnSave = QPushButton("set", self)
         self.btnSave.move(200, 170)
         self.btnSave.clicked.connect(self.btnInput_clicked)
@@ -40,8 +42,9 @@ class MyApp(QWidget):
         self.cb6.move(70,120)
         hbox1 = QHBoxLayout()
         hbox1.addStretch(1)
-        label4 = QLabel('Enter your path:',self)
-        label4.move(20,140)
+        # label4 = QLabel('',self)
+        # label4.move(20,140)
+        self.cb7.move(20,140)
 
         self.setWindowTitle('QCheckBox')
         self.setGeometry(300, 400, 300, 200)
@@ -56,25 +59,24 @@ class MyApp(QWidget):
         global save_fig
         global save_csv
         global path_input
+        global ex
 
         show = self.cb1.isChecked()
         save_fig = self.cb5.isChecked()
         save_csv = self.cb6.isChecked()
         path_input = self.le.text()
+        ex = self.cb7.isChecked()
+        path_input = str(path_input)+'\\**\\*.xml'
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     app.exec_()
-    print(show)
-    print(save_fig)
-    print(save_csv)
-    print(path_input)
 
-run(path_input,show,save_fig,save_csv)
-'.\data\**\*.xml'
+run(ex,path_input,show,save_fig,save_csv)
+# '.\data\**\*.xml'
 # run(path_file,show=False,save_fig=False,save_csv=False,file_input=None)
-
+# C:\Users\blue2020\OneDrive\바탕 화면\data
 # 'Lot, Wafer, Mask, TestSite, Name, Date, Operator, Row, Column,
 # error_flag, error_description, Analysis Wavelength, Rsq of Ref. spectrum,
 # Rsq of IV, I at 1V[A], I at -1V[A]
