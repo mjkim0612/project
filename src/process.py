@@ -25,8 +25,10 @@ dierow_list = []
 diecolumn_list = []
 pat_list = []
 operator_list = []
-error_flag_list = []
-error_description_list = []
+error_flag_IL_list = []
+error_description_IL_list = []
+error_flag_IV_list = []
+error_description_IV_list = []
 Rsq_IV_list = []
 I_1 = []
 I_2 = []
@@ -47,10 +49,12 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 'Operator': operator_list,
                 'Row' : dierow_list,
                 'Column' : diecolumn_list,
-                'error_flag' : error_flag_list,
-                'error_description' : error_description_list,
+                'error_flag_TMW' : error_flag_IL_list,
+                'error_description_TMW' : error_description_IL_list,
                 'Analysis Wavelength': analy_list,
                 'Rsq of Ref. spectrum': IL_R2_list,
+                'error_flag_IV': error_flag_IV_list,
+                'error_description_IV' : error_description_IV_list,
                 'Rsq of IV' : Rsq_IV_list,
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
@@ -60,6 +64,8 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     else:
         path = glob2.glob('{}'.format(path_file))
 
+    if os.path.exists('./resurt'):
+        os.rmdir('./resurt')
     file_list = []
     for i in path:
         if i.split('\\')[-1][-12:-4] in anal :
@@ -102,11 +108,11 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 if analy_wavelength[k].attrib['Symbol'] == 'WL':
                     analy_list.append(analy_wavelength[k].text)
             if R_s < 0.95:
-                error_flag_list.append(1)
-                error_description_list.append('Rsq error')
+                error_flag_IV_list.append(1)
+                error_description_IV_list.append('Rsq error')
             else:
-                error_flag_list.append(0)
-                error_description_list.append('No error')
+                error_flag_IV_list.append(0)
+                error_description_IV_list.append('No error')
             Wavelength = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/WavelengthSweep/L')
             IL = tree.findall(
@@ -124,6 +130,12 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
             ILplot.IL_processed_plot(Wavelength,IL,8)
             IL_R_2 =R_square.get_R2()
             IL_R2_list.append(IL_R_2)
+            if IL_R_2 < 0.95:
+                error_flag_IL_list.append(1)
+                error_description_IL_list.append('Rsq error')
+            else:
+                error_flag_IL_list.append(0)
+                error_description_IL_list.append('No error')
 
             if show == True:
                 plt.show()
@@ -145,7 +157,7 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
             # plt.cla()
             # plt.subplot(222)
             # plt.cla()
-            if j < 98 :
+            if j < file_num :
                 j = j+1
 
             print(filename, 'processed({}/{})'.format(j, file_num))
@@ -169,6 +181,6 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
         if save_csv == False:
             if not os.path.exists('./result'):
                 os.makedirs('./result')
-            df.to_csv('./result/result.csv')
+            df.to_csv('./result/analy_result.csv')
 
     print("time for processed :", round(time.time() - start),"s")
