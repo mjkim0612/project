@@ -64,6 +64,8 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     else:
         path = glob2.glob('{}'.format(path_file))
 
+    if os.path.exists('./resurt'):
+        os.rmdir('./resurt')
     file_list = []
     for i in path:
         if i.split('\\')[-1][-12:-4] in anal :
@@ -179,6 +181,6 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
         if save_csv == False:
             if not os.path.exists('./result'):
                 os.makedirs('./result')
-            df.to_csv('./result/result.csv')
+            df.to_csv('./result/analy_result.csv')
 
     print("time for processed :", round(time.time() - start),"s")
