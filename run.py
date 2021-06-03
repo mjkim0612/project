@@ -22,7 +22,7 @@ class MyApp(QWidget):
         self.cb7 = QCheckBox('External path', self)
 
         self.btnSave = QPushButton("set", self)
-        self.btnSave.move(200, 170)
+        self.btnSave.move(220, 180)
         self.btnSave.clicked.connect(self.btnInput_clicked)
         self.btnSave.clicked.connect(QCoreApplication.instance().quit)
 
@@ -47,10 +47,15 @@ class MyApp(QWidget):
         self.cb7.move(20,140)
 
         self.setWindowTitle('QCheckBox')
-        self.setGeometry(300, 400, 300, 200)
+        self.setGeometry(300, 400, 350, 220)
 
         self.le = QLineEdit('',self)
-        self.le.move(120, 140)
+        self.le.move(140, 140)
+
+        # label4 = QLabel('wafer',self)
+        # label4.move(20, 160)
+        # self.le2 = QLineEdit('',self)
+        # self.le2.move(20, 180)
 
         self.show()
 
@@ -60,6 +65,7 @@ class MyApp(QWidget):
         global save_csv
         global path_input
         global ex
+        # global wafers
 
         show = self.cb1.isChecked()
         save_fig = self.cb5.isChecked()
@@ -67,11 +73,15 @@ class MyApp(QWidget):
         path_input = self.le.text()
         ex = self.cb7.isChecked()
         path_input = str(path_input)+'\\**\\*.xml'
+        # wafers = False
+        # if self.le.text() != None:
+        #     wafers = self.le.text()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     app.exec_()
+    # print(wafers)
 
 run(ex,path_input,show,save_fig,save_csv)
 # '.\data\**\*.xml'
