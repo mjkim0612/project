@@ -1,8 +1,6 @@
 glob2
-
 matplotlib
 pandas
-
 PyQt5
 numpy
 lmfit

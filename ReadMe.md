@@ -18,9 +18,13 @@ A1 김동구, 김민재, 박찬근
 3. Now the program is ready to use.
 
 # How to make it work
+***When you run the program, all files in the result folder are deleted, so make sure to back up if they are important.***
 1. Run the run.py it appears that these checkbox.
 ![checkbox.png](./doc/image/checkbox.png)
 2. Select the desired option and click the set button to launch the program.
     * At this point, enter the path in the textbox where the data file is in the outer path, and leave it blank if not.
 
+# After running
+1. Click on the link below to check the report.
 
+[report](https://github.com/PE2-Project/project/blob/main/doc/report.ipynb)

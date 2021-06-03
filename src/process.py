@@ -13,6 +13,7 @@ import warnings
 import os
 warnings.filterwarnings(action='ignore')
 import time
+import shutil
 
 filename_list = []
 wafer_list = []
@@ -34,6 +35,7 @@ I_1 = []
 I_2 = []
 analy_list = []
 IL_R2_list = []
+max_trans_list = []
 testsiteinfo_list = [wafer_list,lot_list,mask_list,dierow_list,diecolumn_list,testsite_list]
 testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite']
 pddata_list = []
@@ -52,7 +54,8 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 'error_flag_TMW' : error_flag_IL_list,
                 'error_description_TMW' : error_description_IL_list,
                 'Analysis Wavelength': analy_list,
-                'Rsq of Ref. spectrum': IL_R2_list,
+                'Rsq of Ref. spectrum (Nth)': IL_R2_list,
+                'Max transmission of Ref. spec. (dB)' : max_trans_list,
                 'error_flag_IV': error_flag_IV_list,
                 'error_description_IV' : error_description_IV_list,
                 'Rsq of IV' : Rsq_IV_list,
@@ -64,8 +67,8 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
     else:
         path = glob2.glob('{}'.format(path_file))
 
-    if os.path.exists('./resurt'):
-        os.rmdir('./resurt')
+    if os.path.exists('./result'):
+        shutil.rmtree('./result')
     file_list = []
     for i in path:
         if i.split('\\')[-1][-12:-4] in anal :
@@ -120,6 +123,7 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
             DCbias = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/WavelengthSweep')
             ILplot.find_DCbias(DCbias)
+            max_trans_list.append(ILplot.max_trans(IL))
             plt.subplot(231)
             ILplot.IL_raw_plot(Wavelength,IL)
 
