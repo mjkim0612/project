@@ -13,6 +13,7 @@ import warnings
 import os
 warnings.filterwarnings(action='ignore')
 import time
+import shutil
 
 filename_list = []
 wafer_list = []
@@ -34,11 +35,12 @@ I_1 = []
 I_2 = []
 analy_list = []
 IL_R2_list = []
+max_trans_list = []
 testsiteinfo_list = [wafer_list,lot_list,mask_list,dierow_list,diecolumn_list,testsite_list]
 testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite']
 pddata_list = []
 anal = ['DCM_LMZC','DCM_LMZO']
-def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
+def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_input=None):
     j = 0
     data_dic = {'Lot' : lot_list,
                 'Wafer': wafer_list,
@@ -52,27 +54,44 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 'error_flag_TMW' : error_flag_IL_list,
                 'error_description_TMW' : error_description_IL_list,
                 'Analysis Wavelength': analy_list,
-                'Rsq of Ref. spectrum': IL_R2_list,
+                'Rsq of Ref. spectrum (Nth)': IL_R2_list,
+                'Max transmission of Ref. spec. (dB)' : max_trans_list,
                 'error_flag_IV': error_flag_IV_list,
                 'error_description_IV' : error_description_IV_list,
                 'Rsq of IV' : Rsq_IV_list,
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
 
-    if ex == False:
+    if path_input == False:
         path = glob2.glob('.\data\**\*.xml')
     else:
-        path = glob2.glob('{}'.format(path_file))
+        path = glob2.glob('{}'.format(path_input))
+    if os.path.exists('./result'):
+        shutil.rmtree('./result')
+    ap = []
+    if ',' in wafer:
+        wafer = wafer.split(',')
+    else:
+        ap.append(wafer)
+        wafer = ap
+    path_list = []
+    if wafer != False:
+        for i in path:
+            for wafe in wafer:
+                if wafe in i:
+                    path_list.append(i)
+    else:
+        path_list = path
 
     file_list = []
-    for i in path:
+    for i in path_list:
         if i.split('\\')[-1][-12:-4] in anal :
             file_list.append(i)
     file_num = len(file_list)
 
     start = time.time()
 
-    for i in path:
+    for i in path_list:
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
@@ -118,6 +137,7 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
             DCbias = tree.findall(
                 'ElectroOpticalMeasurements/ModulatorSite/Modulator/PortCombo/WavelengthSweep')
             ILplot.find_DCbias(DCbias)
+            max_trans_list.append(ILplot.max_trans(IL))
             plt.subplot(231)
             ILplot.IL_raw_plot(Wavelength,IL)
 
@@ -149,12 +169,6 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                     os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
                 plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi=80)
             plt.close()
-            # plt.subplot(224)
-            # plt.cla()
-            # plt.subplot(221)
-            # plt.cla()
-            # plt.subplot(222)
-            # plt.cla()
             if j < file_num :
                 j = j+1
 
@@ -179,6 +193,6 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
         if save_csv == False:
             if not os.path.exists('./result'):
                 os.makedirs('./result')
-            df.to_csv('./result/result.csv')
+            df.to_csv('./result/analy_result.csv')
 
     print("time for processed :", round(time.time() - start),"s")

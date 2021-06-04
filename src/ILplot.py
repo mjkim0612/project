@@ -54,3 +54,8 @@ def IL_processed_plot(x,y,order=6):
     plt.ylabel('Measured transmission[dB]')
     plt.xlabel('Wavelength[nm]')
     plt.title('Transmission spectra - as measured & processed for {}{} fit ref'.format(ind_IL+4, '$^{th}$'))
+
+def max_trans(y):
+    IL_y = data_set(y)
+    maxt = max(IL_y[-1])
+    return maxt
