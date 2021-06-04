@@ -62,7 +62,7 @@ class MyApp(QWidget):
         global save_csv
         global path_input
         global wafers
-        print('flag3')
+
         show = self.cb1.isChecked()
         save_fig = self.cb5.isChecked()
         save_csv = self.cb6.isChecked()
@@ -73,14 +73,12 @@ class MyApp(QWidget):
         wafers = False
         if self.le3.text() !='':
             wafers = self.le3.text()
-        print('flag4')
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     app.exec_()
-    print(wafers)
-    print(path_input)
-print('flag5')
+
 run(path_input,show,save_fig,save_csv,wafers)
 # '.\data\**\*.xml'
 # run(path_file,show=False,save_fig=False,save_csv=False,file_input=None)

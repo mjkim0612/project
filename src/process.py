@@ -41,7 +41,6 @@ testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite
 pddata_list = []
 anal = ['DCM_LMZC','DCM_LMZO']
 def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_input=None):
-    print('flag6')
     j = 0
     data_dic = {'Lot' : lot_list,
                 'Wafer': wafer_list,
@@ -62,22 +61,19 @@ def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_inp
                 'Rsq of IV' : Rsq_IV_list,
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
-    print('flag7')
+
     if path_input == False:
         path = glob2.glob('.\data\**\*.xml')
     else:
         path = glob2.glob('{}'.format(path_input))
-    print('flag1')
     if os.path.exists('./result'):
         shutil.rmtree('./result')
-    print('flag2')
     ap = []
     if ',' in wafer:
         wafer = wafer.split(',')
     else:
         ap.append(wafer)
         wafer = ap
-    print(wafer)
     path_list = []
     if wafer != False:
         for i in path:
