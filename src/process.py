@@ -40,7 +40,8 @@ testsiteinfo_list = [wafer_list,lot_list,mask_list,dierow_list,diecolumn_list,te
 testsite_attrib_list = ['Wafer','Batch','Maskset','DieRow','DieColumn','TestSite']
 pddata_list = []
 anal = ['DCM_LMZC','DCM_LMZO']
-def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
+def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_input=None):
+    print('flag6')
     j = 0
     data_dic = {'Lot' : lot_list,
                 'Wafer': wafer_list,
@@ -61,23 +62,40 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                 'Rsq of IV' : Rsq_IV_list,
                 'I at 1V[A]' : I_2,
                 'I at -1V[A]' : I_1}
-
-    if ex == False:
+    print('flag7')
+    if path_input == False:
         path = glob2.glob('.\data\**\*.xml')
     else:
-        path = glob2.glob('{}'.format(path_file))
-
+        path = glob2.glob('{}'.format(path_input))
+    print('flag1')
     if os.path.exists('./result'):
         shutil.rmtree('./result')
+    print('flag2')
+    ap = []
+    if ',' in wafer:
+        wafer = wafer.split(',')
+    else:
+        ap.append(wafer)
+        wafer = ap
+    print(wafer)
+    path_list = []
+    if wafer != False:
+        for i in path:
+            for wafe in wafer:
+                if wafe in i:
+                    path_list.append(i)
+    else:
+        path_list = path
+
     file_list = []
-    for i in path:
+    for i in path_list:
         if i.split('\\')[-1][-12:-4] in anal :
             file_list.append(i)
     file_num = len(file_list)
 
     start = time.time()
 
-    for i in path:
+    for i in path_list:
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
 
@@ -155,12 +173,6 @@ def run(ex,path_file,show=False,save_fig=False,save_csv=False,file_input=None):
                     os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
                 plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi=80)
             plt.close()
-            # plt.subplot(224)
-            # plt.cla()
-            # plt.subplot(221)
-            # plt.cla()
-            # plt.subplot(222)
-            # plt.cla()
             if j < file_num :
                 j = j+1
 
