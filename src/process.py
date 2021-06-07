@@ -94,7 +94,7 @@ def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_inp
     for i in path_list:
         tree = elemTree.parse(i)
         testsiteinfo = list(tree.iter('TestSiteInfo'))[0]
-
+        print(path_list[0])
         if testsiteinfo.attrib['TestSite'] in anal:
             filename = file_list[j].split('\\')[-1][:-4]
             for k in range(0,len(testsiteinfo_list)):
@@ -159,15 +159,18 @@ def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_inp
                 plt.show()
 
             if save_fig == False:
+
                 if not os.path.exists('./result'):
                     os.makedirs('./result')
-                if not os.path.exists('./result/{}'.format(i.split('\\')[2])):
-                    os.makedirs('./result/{}'.format(i.split('\\')[2]))
-                if not os.path.exists('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3])):
-                    os.makedirs('./result/{}/{}'.format(i.split('\\')[2],i.split('\\')[3]))
-                if not os.path.exists('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4])):
-                    os.makedirs('./result/{}/{}/{}'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4]))
-                plt.savefig('./result/{}/{}/{}/{}.png'.format(i.split('\\')[2],i.split('\\')[3],i.split('\\')[4],filename), dpi=80)
+                if not os.path.exists('./result/figure'):
+                    os.makedirs('./result/figure')
+                if not os.path.exists('./result/figure/{}'.format(i.split('\\')[-4])):
+                    os.makedirs('./result/figure/{}'.format(i.split('\\')[-4]))
+                if not os.path.exists('./result/figure/{}/{}'.format(i.split('\\')[-4],i.split('\\')[-3])):
+                    os.makedirs('./result/figure/{}/{}'.format(i.split('\\')[-4],i.split('\\')[-3]))
+                if not os.path.exists('./result/figure/{}/{}/{}'.format(i.split('\\')[-4],i.split('\\')[-3],i.split('\\')[-2])):
+                    os.makedirs('./result/figure/{}/{}/{}'.format(i.split('\\')[-4],i.split('\\')[-3],i.split('\\')[-2]))
+                plt.savefig('./result/figure/{}/{}/{}/{}.png'.format(i.split('\\')[-4],i.split('\\')[-3],i.split('\\')[-2],filename), dpi=80)
             plt.close()
             if j < file_num :
                 j = j+1
@@ -193,6 +196,8 @@ def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_inp
         if save_csv == False:
             if not os.path.exists('./result'):
                 os.makedirs('./result')
-            df.to_csv('./result/analy_result.csv')
+            if not os.path.exists('./result/csv'):
+                os.makedirs('./result/csv')
+            df.to_csv('./result/csv/analy_result.csv')
 
     print("time for processed :", round(time.time() - start),"s")
