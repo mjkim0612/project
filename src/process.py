@@ -75,7 +75,7 @@ def run(path_input,show=False,save_fig=False,save_csv=False,wafer=False,file_inp
         ap.append(wafer)
         wafer = ap
     path_list = []
-    if wafer != False:
+    if wafer != ['all']:
         for i in path:
             for wafe in wafer:
                 if wafe in i:

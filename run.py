@@ -70,7 +70,7 @@ class MyApp(QWidget):
         if self.le.text() !='':
             path_input = self.le.text()
             path_input = str(path_input)+'\\**\\*.xml'
-        wafers = False
+        wafers = 'all'
         if self.le3.text() !='':
             wafers = self.le3.text()
 
@@ -78,6 +78,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = MyApp()
     app.exec_()
+    print(wafers)
 
 run(path_input,show,save_fig,save_csv,wafers)
 # '.\data\**\*.xml'
