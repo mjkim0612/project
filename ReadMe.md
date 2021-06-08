@@ -9,8 +9,8 @@ A1 김동구, 김민재, 박찬근
 
 # Installation
 1. This program requires several libraries.(Basically, interpreter anaconda or miniconda is needed.)
-    * So, enter the 'Terminal' and type as follows.
-    * pip install -r requirements.txt
+    * So, enter the ***'Terminal'*** and type as follows.
+    * ***pip install -r requirements.txt***
     * This command will install all necessary libraries.
 2. The 'src' folder must be specified as the sources root.
     * Right-click on the src folder on the left
